@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase, type GuestbookMessage } from "@/lib/supabase";
+import ReplySection from "@/components/ReplySection";
 
 export default function GuestbookPage() {
   const [messages, setMessages] = useState<GuestbookMessage[]>([]);
@@ -164,27 +165,29 @@ export default function GuestbookPage() {
           ) : (
             <div className="space-y-4">
               {messages.map((msg, i) => (
-                <div
-                  key={msg.id}
-                  className="retro-box"
-                  style={{ borderWidth: 2 }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-yellow">◆</span>
-                    <span className="font-bold text-sm">{msg.name}</span>
-                    <span
-                      className="text-xs text-zinc-500 ml-auto"
-                      style={{ fontFamily: '"Courier New", monospace' }}
-                    >
-                      {new Date(msg.created_at).toLocaleDateString("zh-CN")}
-                    </span>
+                <div key={msg.id}>
+                  <div
+                    className="retro-box"
+                    style={{ borderWidth: 2 }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-yellow">◆</span>
+                      <span className="font-bold text-sm">{msg.name}</span>
+                      <span
+                        className="text-xs text-zinc-500 ml-auto"
+                        style={{ fontFamily: '"Courier New", monospace' }}
+                      >
+                        {new Date(msg.created_at).toLocaleDateString("zh-CN")}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed pl-4">{msg.content}</p>
+                    {i === 0 && (
+                      <p className="text-right text-xs text-hot-pink mt-1 blink">
+                        ★ Latest Entry ★
+                      </p>
+                    )}
                   </div>
-                  <p className="text-sm leading-relaxed pl-4">{msg.content}</p>
-                  {i === 0 && (
-                    <p className="text-right text-xs text-hot-pink mt-1 blink">
-                      ★ Latest Entry ★
-                    </p>
-                  )}
+                  <ReplySection parentType="guestbook" parentId={msg.id} />
                 </div>
               ))}
             </div>

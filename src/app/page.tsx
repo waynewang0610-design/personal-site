@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { supabase, type Update } from "@/lib/supabase";
+import ReplySection from "@/components/ReplySection";
 
 export const dynamic = "force-dynamic";
 
@@ -80,19 +81,22 @@ export default async function Home() {
           ) : (
             <div className="space-y-3">
               {updateList.map((item, i) => (
-                <div key={item.id} className="retro-box" style={{ borderWidth: 2 }}>
-                  <div className="flex items-start gap-3">
-                    <span
-                      className="shrink-0 text-xs font-bold px-2 py-1 bg-black text-lime"
-                      style={{ fontFamily: '"Courier New", monospace' }}
-                    >
-                      {item.date}
-                    </span>
-                    <span className="text-sm">{item.content}</span>
-                    {i === 0 && (
-                      <span className="blink text-hot-pink text-xs font-bold">NEW!</span>
-                    )}
+                <div key={item.id}>
+                  <div className="retro-box" style={{ borderWidth: 2 }}>
+                    <div className="flex items-start gap-3">
+                      <span
+                        className="shrink-0 text-xs font-bold px-2 py-1 bg-black text-lime"
+                        style={{ fontFamily: '"Courier New", monospace' }}
+                      >
+                        {item.date}
+                      </span>
+                      <span className="text-sm">{item.content}</span>
+                      {i === 0 && (
+                        <span className="blink text-hot-pink text-xs font-bold">NEW!</span>
+                      )}
+                    </div>
                   </div>
+                  <ReplySection parentType="update" parentId={item.id} />
                 </div>
               ))}
             </div>
