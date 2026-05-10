@@ -3,8 +3,8 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wayne Wang",
-  description: "Wayne Wang 的个人网站",
+  title: "Wayne Wang's Homepage",
+  description: "Welcome to my crib on the information superhighway!",
 };
 
 export default function RootLayout({
@@ -13,26 +13,55 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-white text-zinc-900">
-        <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur">
-          <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
-            <Link href="/" className="text-lg font-semibold tracking-tight">
-              Wayne Wang
+    <html lang="zh-CN" className="h-full">
+      <body className="min-h-full flex flex-col">
+        {/* ===== HEADER ===== */}
+        <header>
+          <div className="star-divider">
+            ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★
+          </div>
+          <div className="text-center py-4">
+            <h1
+              className="text-3xl font-bold tracking-wide px-6 py-2 inline-block"
+              style={{
+                fontFamily: '"Times New Roman", serif',
+                color: "#ff69b4",
+                textShadow: "0 0 10px #ff69b4, 0 0 20px #ff69b4, 2px 2px 0 #000",
+              }}
+            >
+              WAYNE WANG&apos;S HOMEPAGE
+            </h1>
+          </div>
+          <div className="star-divider">✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧ ✧</div>
+          <nav className="text-center py-3">
+            <span className="text-lime font-bold font-mono">[ </span>
+            <Link href="/" className="nav-link">
+              Home
             </Link>
-            <div className="flex gap-6 text-sm font-medium text-zinc-600">
-              <Link href="/" className="hover:text-zinc-900 transition-colors">
-                首页
-              </Link>
-              <Link href="/guestbook" className="hover:text-zinc-900 transition-colors">
-                留言板
-              </Link>
-            </div>
+            <span className="text-lime font-bold font-mono"> ]</span>
+            <span className="mx-2 text-white font-mono">|</span>
+            <span className="text-lime font-bold font-mono">[ </span>
+            <Link href="/guestbook" className="nav-link">
+              Guestbook
+            </Link>
+            <span className="text-lime font-bold font-mono"> ]</span>
           </nav>
+          <hr className="rainbow-hr" />
         </header>
+
+        {/* ===== MAIN ===== */}
         <main className="flex-1">{children}</main>
-        <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
-          <p>© {new Date().getFullYear()} Wayne Wang. Built with Next.js.</p>
+
+        {/* ===== FOOTER ===== */}
+        <footer>
+          <hr className="rainbow-hr" />
+          <div className="text-center py-4 text-cyan text-xs font-mono space-y-1">
+            <p className="text-yellow">★ This page is best viewed in 800x600 ★</p>
+            <p>Made with Notepad.exe and lots of &lt;blink&gt; tags</p>
+            <p className="text-zinc-500 mt-2">
+              © {new Date().getFullYear()} Wayne Wang
+            </p>
+          </div>
         </footer>
       </body>
     </html>

@@ -54,7 +54,7 @@ export default function AdminPage() {
     await supabase.from("updates").insert({ date: newDate, content: newContent.trim() });
     setNewDate("");
     setNewContent("");
-    setMsg("动态已发布！");
+    setMsg("Update posted!");
     setTimeout(() => setMsg(""), 2000);
     loadUpdates();
   };
@@ -65,132 +65,157 @@ export default function AdminPage() {
   };
 
   if (session === null) {
-    return <div className="mx-auto max-w-3xl px-6 py-24 text-center text-zinc-400">加载中...</div>;
+    return (
+      <div className="mx-auto max-w-lg px-4 py-24 text-center">
+        <span className="counter blink">LOADING...</span>
+      </div>
+    );
   }
 
   if (!session) {
     return (
-      <div className="mx-auto max-w-sm px-6 py-24">
-        <h1 className="mb-8 text-center text-2xl font-bold tracking-tight">管理员登录</h1>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium text-zinc-700">
-              邮箱
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-              placeholder="admin@example.com"
-              required
-            />
+      <div className="mx-auto max-w-sm px-4 py-16">
+        <div className="retro-box">
+          <div className="window-title">
+            <span>🔒 Administrator Login</span>
+            <span>🗙</span>
           </div>
-          <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-zinc-700">
-              密码
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-              placeholder="输入密码"
-              required
-            />
+          <div className="retro-inset">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-sm font-bold mb-1">★ Email:</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                  style={{ borderStyle: "inset" }}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-bold mb-1">★ Password:</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                  style={{ borderStyle: "inset" }}
+                  required
+                />
+              </div>
+              {error && (
+                <p className="text-red-600 text-xs font-mono blink">{error}</p>
+              )}
+              <button type="submit" className="retro-btn w-full">
+                🔑 Log In
+              </button>
+            </form>
           </div>
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          <button
-            type="submit"
-            className="w-full h-10 rounded-lg bg-zinc-900 text-sm font-medium text-white hover:bg-zinc-700 transition-colors"
-          >
-            登录
-          </button>
-        </form>
+        </div>
+        <p className="text-center mt-4">
+          <a href="/" className="nav-link text-xs">← Back to Homepage</a>
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <div className="mb-12 flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">管理后台</h1>
-        <button
-          onClick={handleLogout}
-          className="text-sm text-zinc-400 hover:text-zinc-600 transition-colors"
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      {/* === Admin Header === */}
+      <div className="retro-box mb-6 flex items-center justify-between">
+        <span
+          className="text-xl font-bold"
+          style={{ fontFamily: '"Times New Roman", serif', color: "#000080" }}
         >
-          退出登录
+          🛠 Admin Control Panel
+        </span>
+        <button onClick={handleLogout} className="retro-btn text-xs">
+          🚪 Logout
         </button>
       </div>
 
-      <section className="mb-16">
-        <h2 className="mb-4 text-lg font-semibold">发布新动态</h2>
-        <form onSubmit={handleAddUpdate} className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 space-y-4">
-          <div>
-            <label htmlFor="date" className="mb-1 block text-sm font-medium text-zinc-700">
-              日期
-            </label>
-            <input
-              id="date"
-              type="date"
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="content" className="mb-1 block text-sm font-medium text-zinc-700">
-              内容
-            </label>
-            <textarea
-              id="content"
-              value={newContent}
-              onChange={(e) => setNewContent(e.target.value)}
-              placeholder="今天发生了什么..."
-              rows={3}
-              className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 resize-none"
-              required
-            />
-          </div>
-          <div className="flex items-center gap-4">
-            <button
-              type="submit"
-              className="inline-flex h-10 items-center rounded-lg bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-700 transition-colors"
-            >
-              发布动态
-            </button>
-            {msg && <span className="text-sm text-green-600">{msg}</span>}
-          </div>
-        </form>
-      </section>
+      {/* === New Update Form === */}
+      <div className="retro-box mb-8">
+        <div className="window-title">
+          <span>📝 Post New Update</span>
+          <span>🗙</span>
+        </div>
+        <div className="retro-inset">
+          <form onSubmit={handleAddUpdate} className="space-y-4">
+            <div>
+              <label className="block text-sm font-bold mb-1">★ Date:</label>
+              <input
+                type="date"
+                value={newDate}
+                onChange={(e) => setNewDate(e.target.value)}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                style={{ borderStyle: "inset" }}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-1">★ Content:</label>
+              <textarea
+                value={newContent}
+                onChange={(e) => setNewContent(e.target.value)}
+                rows={3}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none resize-none"
+                style={{ borderStyle: "inset" }}
+                required
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <button type="submit" className="retro-btn retro-btn-yellow">
+                📋 Post Update
+              </button>
+              {msg && <span className="blink text-lime font-bold text-sm">{msg}</span>}
+            </div>
+          </form>
+        </div>
+      </div>
 
-      <section>
-        <h2 className="mb-4 text-lg font-semibold">已发布的动态</h2>
-        {updates.length === 0 ? (
-          <p className="text-zinc-400">还没有动态。</p>
-        ) : (
-          <div className="space-y-3">
-            {updates.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-start gap-4 rounded-lg border border-zinc-100 p-4"
-              >
-                <time className="shrink-0 text-sm text-zinc-400">{item.date}</time>
-                <p className="flex-1 text-zinc-700">{item.content}</p>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-sm text-red-400 hover:text-red-600 transition-colors"
+      {/* === Existing Updates === */}
+      <div className="retro-box">
+        <div className="window-title">
+          <span>📋 Manage Updates ({updates.length})</span>
+          <span>🗙</span>
+        </div>
+        <div className="retro-inset">
+          {updates.length === 0 ? (
+            <p className="text-center text-zinc-500 py-4">No updates yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {updates.map((item) => (
+                <div
+                  key={item.id}
+                  className="retro-box flex items-start gap-3"
+                  style={{ borderWidth: 2 }}
                 >
-                  删除
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+                  <span
+                    className="shrink-0 text-xs font-bold px-2 py-1 bg-black text-lime"
+                    style={{ fontFamily: '"Courier New", monospace' }}
+                  >
+                    {item.date}
+                  </span>
+                  <span className="flex-1 text-sm">{item.content}</span>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="text-xs text-red-600 font-bold hover:underline"
+                    style={{ fontFamily: '"Courier New", monospace' }}
+                  >
+                    [X]
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <p className="text-center mt-4">
+        <a href="/" className="nav-link text-xs">← Back to Homepage</a>
+      </p>
     </div>
   );
 }

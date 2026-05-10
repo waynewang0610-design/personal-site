@@ -10,6 +10,8 @@ export default function GuestbookPage() {
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
 
   useEffect(() => {
     supabase
@@ -39,6 +41,8 @@ export default function GuestbookPage() {
       .limit(50);
     setMessages((data as GuestbookMessage[]) ?? []);
     setName("");
+    setEmail("");
+    setWebsite("");
     setContent("");
     setSubmitting(false);
     setDone(true);
@@ -46,69 +50,154 @@ export default function GuestbookPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="mb-2 text-3xl font-bold tracking-tight">留言板</h1>
-      <p className="mb-12 text-zinc-500">留下你想说的话，我会看到的～</p>
-
-      <form
-        onSubmit={handleSubmit}
-        className="mb-16 rounded-xl border border-zinc-200 bg-zinc-50 p-6"
-      >
-        <div className="mb-4">
-          <label htmlFor="name" className="mb-1 block text-sm font-medium text-zinc-700">
-            你的名字
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="怎么称呼你？"
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition-colors"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="content" className="mb-1 block text-sm font-medium text-zinc-700">
-            留言内容
-          </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="想说点什么..."
-            rows={4}
-            className="w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition-colors resize-none"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="inline-flex h-10 items-center rounded-lg bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-700 transition-colors disabled:opacity-50"
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      {/* === Title === */}
+      <div className="text-center mb-6">
+        <h1
+          className="text-3xl font-bold inline-block"
+          style={{
+            fontFamily: '"Times New Roman", serif',
+            color: "#00ffff",
+            textShadow: "0 0 10px #00ffff, 2px 2px 0 #000",
+          }}
         >
-          {submitting ? "提交中..." : "发布留言"}
-        </button>
-        {done && <span className="ml-3 text-sm text-green-600">留言成功！</span>}
-      </form>
+          📖 My Guestbook
+        </h1>
+        <p className="text-yellow text-sm mt-2 font-mono">
+          ★ Sign my guestbook, pretty please! ★
+        </p>
+      </div>
 
-      {loading ? (
-        <p className="text-zinc-400">加载中...</p>
-      ) : (
-        <div className="space-y-4">
-          {messages.map((msg) => (
-            <div key={msg.id} className="rounded-lg border border-zinc-100 p-5">
-              <div className="mb-2 flex items-center gap-3">
-                <span className="font-medium text-zinc-800">{msg.name}</span>
-                <time className="text-sm text-zinc-400">
-                  {new Date(msg.created_at).toLocaleDateString("zh-CN")}
-                </time>
-              </div>
-              <p className="text-zinc-600 leading-relaxed">{msg.content}</p>
-            </div>
-          ))}
+      {/* === Sign Form === */}
+      <div className="retro-box mb-8">
+        <div className="window-title">
+          <span>📝 Sign the Guestbook</span>
+          <span>🗙</span>
         </div>
-      )}
+        <div className="retro-inset">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-bold mb-1">
+                ★ Your Name:
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                style={{ borderStyle: "inset" }}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-1">
+                ★ Email (optional):
+              </label>
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                style={{ borderStyle: "inset" }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-1">
+                ★ Homepage (optional):
+              </label>
+              <input
+                type="text"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none"
+                style={{ borderStyle: "inset" }}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-1">
+                ★ Your Message:
+              </label>
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={5}
+                className="w-full border-2 border-inset border-zinc-400 bg-white px-3 py-2 text-sm outline-none resize-none"
+                style={{ borderStyle: "inset" }}
+                required
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="retro-btn retro-btn-pink"
+              >
+                {submitting ? "Sending..." : "✍ Sign Guestbook"}
+              </button>
+              {done && (
+                <span className="blink text-lime font-bold text-sm">
+                  ★ Thanks! Your message has been added!
+                </span>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <hr className="rainbow-hr" />
+
+      {/* === Messages === */}
+      <div className="retro-box mt-6">
+        <div className="window-title">
+          <span>💬 Guestbook Entries ({messages.length})</span>
+          <span>🗙</span>
+        </div>
+        <div className="retro-inset">
+          {loading ? (
+            <p className="text-center text-zinc-500 py-4 font-mono">
+              Loading guestbook...
+            </p>
+          ) : messages.length === 0 ? (
+            <p className="text-center text-zinc-500 py-4">
+              No entries yet. Be the first to sign!
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {messages.map((msg, i) => (
+                <div
+                  key={msg.id}
+                  className="retro-box"
+                  style={{ borderWidth: 2 }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-yellow">◆</span>
+                    <span className="font-bold text-sm">{msg.name}</span>
+                    <span
+                      className="text-xs text-zinc-500 ml-auto"
+                      style={{ fontFamily: '"Courier New", monospace' }}
+                    >
+                      {new Date(msg.created_at).toLocaleDateString("zh-CN")}
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed pl-4">{msg.content}</p>
+                  {i === 0 && (
+                    <p className="text-right text-xs text-hot-pink mt-1 blink">
+                      ★ Latest Entry ★
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* === Back link === */}
+      <div className="text-center mt-6">
+        <a href="/" className="nav-link text-sm">
+          ← Back to Homepage
+        </a>
+      </div>
     </div>
   );
 }
