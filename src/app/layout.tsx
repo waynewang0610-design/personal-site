@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import OnlineStatus from "@/components/OnlineStatus";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -45,6 +46,24 @@ export default function RootLayout({
               Guestbook
             </Link>
             <span className="text-lime font-bold font-mono"> ]</span>
+            <span className="mx-2 text-white font-mono">|</span>
+            <span className="text-lime font-bold font-mono">[ </span>
+            <Link href="/about" className="nav-link">
+              About
+            </Link>
+            <span className="text-lime font-bold font-mono"> ]</span>
+            <span className="mx-2 text-white font-mono">|</span>
+            <span className="text-lime font-bold font-mono">[ </span>
+            <Link href="/blog" className="nav-link">
+              Blog
+            </Link>
+            <span className="text-lime font-bold font-mono"> ]</span>
+            <span className="mx-2 text-white font-mono">|</span>
+            <span className="text-lime font-bold font-mono">[ </span>
+            <Link href="/links" className="nav-link">
+              Links
+            </Link>
+            <span className="text-lime font-bold font-mono"> ]</span>
           </nav>
           <hr className="rainbow-hr" />
         </header>
@@ -56,6 +75,7 @@ export default function RootLayout({
         <footer>
           <hr className="rainbow-hr" />
           <div className="text-center py-4 text-cyan text-xs font-mono space-y-1">
+            <p><OnlineStatus /></p>
             <p className="text-yellow">★ This page is best viewed in 800x600 ★</p>
             <p>Made with Notepad.exe and lots of &lt;blink&gt; tags</p>
             <p className="text-zinc-500 mt-2">

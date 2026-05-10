@@ -1,17 +1,18 @@
 import Link from "next/link";
-import { supabase, type Update } from "@/lib/supabase";
+import { supabase, type Update, type BlogPost } from "@/lib/supabase";
 import ReplySection from "@/components/ReplySection";
+import VisitorMap from "@/components/VisitorMap";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { data: updates } = await supabase
-    .from("updates")
-    .select("*")
-    .order("id", { ascending: false })
-    .limit(10);
+  const [{ data: updates }, { data: posts }] = await Promise.all([
+    supabase.from("updates").select("*").order("id", { ascending: false }).limit(10),
+    supabase.from("blog_posts").select("*").order("id", { ascending: false }).limit(3),
+  ]);
 
   const updateList = (updates as Update[]) ?? [];
+  const blogList = (posts as BlogPost[]) ?? [];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -62,6 +63,34 @@ export default async function Home() {
           ✉ Email Me
         </a>
       </div>
+
+      {/* === Visitor Map === */}
+      <VisitorMap />
+
+      {/* === Latest Blog Posts === */}
+      {blogList.length > 0 && (
+        <div className="retro-box mb-6">
+          <div className="window-title">
+            <span>📝 Latest Blog Posts</span>
+            <Link href="/blog" className="text-white text-xs hover:underline">
+              [View All]
+            </Link>
+          </div>
+          <div className="retro-inset">
+            <div className="space-y-2">
+              {blogList.map((post) => (
+                <Link key={post.id} href={`/blog/${post.id}`} className="block">
+                  <span className="text-yellow">→</span>{" "}
+                  <span className="text-sm hover:underline">{post.title}</span>
+                  <span className="text-xs text-zinc-400 font-mono ml-2">
+                    [{post.date}]
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <hr className="rainbow-hr" />
 

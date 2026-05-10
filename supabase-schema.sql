@@ -62,3 +62,47 @@ CREATE POLICY "replies_public_insert" ON replies
 
 CREATE POLICY "replies_auth_delete" ON replies
   FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 9. 博文表
+CREATE TABLE IF NOT EXISTS blog_posts (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  date TEXT NOT NULL
+);
+
+ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "blog_posts_public_read" ON blog_posts FOR SELECT USING (true);
+CREATE POLICY "blog_posts_auth_write" ON blog_posts FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "blog_posts_auth_delete" ON blog_posts FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 10. 友链表
+CREATE TABLE IF NOT EXISTS friend_links (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  name TEXT NOT NULL,
+  url TEXT NOT NULL,
+  description TEXT
+);
+
+ALTER TABLE friend_links ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "friend_links_public_read" ON friend_links FOR SELECT USING (true);
+CREATE POLICY "friend_links_auth_write" ON friend_links FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "friend_links_auth_delete" ON friend_links FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 11. 照片表
+CREATE TABLE IF NOT EXISTS photos (
+  id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  url TEXT NOT NULL,
+  caption TEXT
+);
+
+ALTER TABLE photos ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "photos_public_read" ON photos FOR SELECT USING (true);
+CREATE POLICY "photos_auth_write" ON photos FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "photos_auth_delete" ON photos FOR DELETE USING (auth.role() = 'authenticated');

@@ -23,6 +23,29 @@ export interface Reply {
   content: string;
 }
 
+export interface BlogPost {
+  id: number;
+  created_at: string;
+  title: string;
+  content: string;
+  date: string;
+}
+
+export interface FriendLink {
+  id: number;
+  created_at: string;
+  name: string;
+  url: string;
+  description: string | null;
+}
+
+export interface Photo {
+  id: number;
+  created_at: string;
+  url: string;
+  caption: string | null;
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
