@@ -17,7 +17,7 @@ export default async function Home() {
       <section className="mb-20">
         <h1 className="mb-4 text-4xl font-bold tracking-tight">你好，我是 Wayne Wang 👋</h1>
         <p className="mb-6 max-w-lg text-lg leading-relaxed text-zinc-600">
-          站主是个卑微的码农，上课小手机，下课去觅食，项目就ai。这个网站什么都不是，就喜欢在这个别人找不到的网络小角落苟活着。这里有留言板，站主不吃压力，注意发。
+          站主是个卑微的码农，上课小手机，下课去觅食，项目就ai。这个网站什么都不是，就喜欢在这个别人找不到的网络小角落苟活着。这里有留言板，站主不吃压力，注意发言。
         </p>
         <div className="flex gap-4">
           <a
