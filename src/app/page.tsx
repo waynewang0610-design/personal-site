@@ -15,13 +15,13 @@ export default async function Home() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
       <section className="mb-20">
-        <h1 className="mb-4 text-4xl font-bold tracking-tight">你好，我是 YourName 👋</h1>
+        <h1 className="mb-4 text-4xl font-bold tracking-tight">你好，我是 Wayne Wang 👋</h1>
         <p className="mb-6 max-w-lg text-lg leading-relaxed text-zinc-600">
           一个热爱技术和创造的人。这里是我在互联网上的小角落，记录我的学习和思考。欢迎你来逛逛。
         </p>
         <div className="flex gap-4">
           <a
-            href="https://github.com"
+            href="https://github.com/waynewang0610-design"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex h-10 items-center rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-700 transition-colors"
