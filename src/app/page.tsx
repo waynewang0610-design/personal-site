@@ -85,8 +85,8 @@ export default async function Home() {
                   <div className="retro-box" style={{ borderWidth: 2 }}>
                     <div className="flex items-start gap-3">
                       <span
-                        className="shrink-0 text-xs font-bold px-2 py-1 bg-black text-lime"
-                        style={{ fontFamily: '"Courier New", monospace' }}
+                        className="shrink-0 text-xs font-bold px-2 py-1 bg-black"
+                        style={{ fontFamily: '"Courier New", monospace', color: "#32cd32" }}
                       >
                         {item.date}
                       </span>

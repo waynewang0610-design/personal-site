@@ -169,7 +169,7 @@ export default function AdminPage() {
               <button type="submit" className="retro-btn retro-btn-yellow">
                 📋 Post Update
               </button>
-              {msg && <span className="blink text-lime font-bold text-sm">{msg}</span>}
+              {msg && <span className="blink font-bold text-sm" style={{ color: "#32cd32" }}>{msg}</span>}
             </div>
           </form>
         </div>
@@ -193,8 +193,8 @@ export default function AdminPage() {
                   style={{ borderWidth: 2 }}
                 >
                   <span
-                    className="shrink-0 text-xs font-bold px-2 py-1 bg-black text-lime"
-                    style={{ fontFamily: '"Courier New", monospace' }}
+                    className="shrink-0 text-xs font-bold px-2 py-1 bg-black"
+                    style={{ fontFamily: '"Courier New", monospace', color: "#32cd32" }}
                   >
                     {item.date}
                   </span>

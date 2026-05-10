@@ -136,7 +136,7 @@ export default function GuestbookPage() {
                 {submitting ? "Sending..." : "✍ Sign Guestbook"}
               </button>
               {done && (
-                <span className="blink text-lime font-bold text-sm">
+                <span className="blink font-bold text-sm" style={{ color: "#32cd32" }}>
                   ★ Thanks! Your message has been added!
                 </span>
               )}
@@ -182,7 +182,7 @@ export default function GuestbookPage() {
                     </div>
                     <p className="text-sm leading-relaxed pl-4">{msg.content}</p>
                     {i === 0 && (
-                      <p className="text-right text-xs text-hot-pink mt-1 blink">
+                      <p className="text-right text-xs mt-1 blink" style={{ color: "#ff69b4" }}>
                         ★ Latest Entry ★
                       </p>
                     )}
