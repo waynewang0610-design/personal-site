@@ -76,6 +76,7 @@ ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "blog_posts_public_read" ON blog_posts FOR SELECT USING (true);
 CREATE POLICY "blog_posts_auth_write" ON blog_posts FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "blog_posts_auth_update" ON blog_posts FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "blog_posts_auth_delete" ON blog_posts FOR DELETE USING (auth.role() = 'authenticated');
 
 -- 10. 友链表
@@ -91,6 +92,7 @@ ALTER TABLE friend_links ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "friend_links_public_read" ON friend_links FOR SELECT USING (true);
 CREATE POLICY "friend_links_auth_write" ON friend_links FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "friend_links_auth_update" ON friend_links FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "friend_links_auth_delete" ON friend_links FOR DELETE USING (auth.role() = 'authenticated');
 
 -- 11. 照片表
@@ -105,6 +107,7 @@ ALTER TABLE photos ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "photos_public_read" ON photos FOR SELECT USING (true);
 CREATE POLICY "photos_auth_write" ON photos FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "photos_auth_update" ON photos FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "photos_auth_delete" ON photos FOR DELETE USING (auth.role() = 'authenticated');
 
 -- 12. 站点配置表（About 页面等可编辑内容）
