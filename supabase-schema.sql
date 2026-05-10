@@ -106,3 +106,17 @@ ALTER TABLE photos ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "photos_public_read" ON photos FOR SELECT USING (true);
 CREATE POLICY "photos_auth_write" ON photos FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "photos_auth_delete" ON photos FOR DELETE USING (auth.role() = 'authenticated');
+
+-- 12. 站点配置表（About 页面等可编辑内容）
+CREATE TABLE IF NOT EXISTS site_config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
+ALTER TABLE site_config ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "site_config_public_read" ON site_config FOR SELECT USING (true);
+CREATE POLICY "site_config_auth_write" ON site_config FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "site_config_auth_update" ON site_config FOR UPDATE USING (auth.role() = 'authenticated');
+
+INSERT INTO site_config (key, value) VALUES ('about_content', 'Hi, I''m Wayne Wang — a CS student who spends way too much time on the internet. I write code, play with AI, and build random stuff that nobody asked for. This site is my little corner of the web where I can be myself without algorithms telling me what to do.') ON CONFLICT (key) DO NOTHING;
