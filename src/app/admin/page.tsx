@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase, type Update, type BlogPost, type FriendLink, type Photo } from "@/lib/supabase";
+import { supabase, type Update, type BlogPost, type FriendLink, type Photo, type GuestbookMessage } from "@/lib/supabase";
 
-type Tab = "updates" | "blog" | "links" | "photos" | "about";
+type Tab = "updates" | "blog" | "links" | "photos" | "about" | "guestbook";
 
 export default function AdminPage() {
   const [session, setSession] = useState<boolean | null>(null);
@@ -37,6 +37,9 @@ export default function AdminPage() {
   const [photoUrl, setPhotoUrl] = useState("");
   const [photoCaption, setPhotoCaption] = useState("");
 
+  // Guestbook
+  const [messages, setMessages] = useState<GuestbookMessage[]>([]);
+
   // About
   const [aboutContent, setAboutContent] = useState("");
   const [aboutLoaded, setAboutLoaded] = useState(false);
@@ -51,6 +54,7 @@ export default function AdminPage() {
       else if (tab === "blog") loadPosts();
       else if (tab === "links") loadLinks();
       else if (tab === "photos") loadPhotos();
+      else if (tab === "guestbook") loadMessages();
       else if (tab === "about" && !aboutLoaded) loadAbout();
     }
   }, [session, tab]);
@@ -157,6 +161,13 @@ export default function AdminPage() {
   };
   const delPhoto = async (id: number) => { await supabase.from("photos").delete().eq("id", id); loadPhotos(); };
 
+  // ===== GUESTBOOK =====
+  const loadMessages = async () => {
+    const { data } = await supabase.from("guestbook_messages").select("*").order("id", { ascending: false });
+    setMessages((data as GuestbookMessage[]) ?? []);
+  };
+  const delMessage = async (id: number) => { await supabase.from("guestbook_messages").delete().eq("id", id); loadMessages(); };
+
   // ===== ABOUT =====
   const loadAbout = async () => {
     const { data } = await supabase.from("site_config").select("value").eq("key", "about_content").single();
@@ -174,6 +185,7 @@ export default function AdminPage() {
     { key: "blog", label: "Blog" },
     { key: "links", label: "Links" },
     { key: "photos", label: "Photos" },
+    { key: "guestbook", label: "Guestbook" },
     { key: "about", label: "About" },
   ];
 
@@ -364,6 +376,32 @@ export default function AdminPage() {
             </div>
           </div>
         </>
+      )}
+
+      {/* ===== GUESTBOOK ===== */}
+      {tab === "guestbook" && (
+        <div className="retro-box">
+          <div className="window-title"><span>💬 Manage Messages ({messages.length})</span><span>🗙</span></div>
+          <div className="retro-inset">
+            {messages.length === 0 ? <p className="text-center text-zinc-500 py-4">No messages.</p> : (
+              <div className="space-y-3">
+                {messages.map((m) => (
+                  <div key={m.id} className="retro-box flex items-start gap-3" style={{ borderWidth: 2 }}>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-yellow">◆</span>
+                        <span className="font-bold text-sm">{m.name}</span>
+                        <span className="text-xs text-zinc-400 font-mono">{new Date(m.created_at).toLocaleDateString("zh-CN")}</span>
+                      </div>
+                      <p className="text-xs pl-4">{m.content}</p>
+                    </div>
+                    <button onClick={() => delMessage(m.id)} className="shrink-0 text-xs text-red-600 font-bold hover:underline" style={{ fontFamily: '"Courier New", monospace' }}>[X]</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* ===== ABOUT ===== */}
